@@ -12,9 +12,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    await client.connect();
+    await client.connect(); // <--- this could be timing out or erroring
+
     const db = client.db(dbName);
-    const user = await db.collection("whitelisted_users").findOne({ roblox_username: username });
+    const collection = db.collection("whitelisted_users");
+
+    const user = await collection.findOne({ roblox_username: username });
 
     if (!user) {
       return res.status(200).json({ whitelisted: false });
@@ -27,7 +30,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error("Error checking whitelist:", err);
+    console.error("❌ API ERROR:", err); // ✅ this will show up in Vercel logs
     return res.status(500).json({ error: "Internal server error" });
   }
 }
