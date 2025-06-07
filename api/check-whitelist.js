@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb";
-
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 const dbName = "ZerionCluster";
@@ -12,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await client.connect(); // <--- this could be timing out or erroring
+    await client.connect();
 
     const db = client.db(dbName);
     const collection = db.collection("whitelisted_users");
@@ -30,7 +29,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error("❌ API ERROR:", err); // ✅ this will show up in Vercel logs
+    console.error("API ERROR:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
