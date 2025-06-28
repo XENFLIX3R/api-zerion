@@ -1,4 +1,3 @@
 export default function handler(req, res) {
-  const number = "53922592";
-  res.status(200).send(number);
+  res.status(200).json({ asset: 84569323 });
 }
